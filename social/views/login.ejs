@@ -1,5 +1,8 @@
 <% include head.ejs %>
 <div class="row">
+    <a href="/auth/facebook"><button>Facebook</button></a>
+    <a href="/auth/twitter"><button>Twitter</button></a>
+    <a href="/auth/google"><button>Google</button></a>
     <% if (message.length > 0) {%>
     <div class="alert alert-danger"><%= message %></div>
     <% } %>

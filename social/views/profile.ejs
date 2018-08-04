@@ -1,5 +1,27 @@
 <% include head.ejs %>
 <h1>Profile</h1> <a href="/logout"> <button>Logout</button> </a>
 
-<h3> Email: <%= user.local.email %></h3>
+
+<% if (user.local.email || user.local.username) {%>
 <h3>Username: <%= user.local.username %></h3>
+<a href="#">Remove Email</a>
+<% } else { %>
+<br>
+<a href="/connect/local">Connect Your Email and Username</a>
+<% } %>
+
+<% if (user.facebook.token)  {%>
+<h3>Facebook: <%= user.facebook.name %></h3>
+<a href="#">Remove Facebook</a>
+<% } else { %>
+<br>
+<a href="/connect/facebook">Connect Your facebook</a>
+<% } %>
+
+<% if (user.google.token)  {%>
+<h3>Google Name: <%= user.google.name %></h3>
+<a href="#">Remove Gmail</a>
+<% } else { %>
+<br>
+<a href="/connect/google">Connect Your Gmail </a>
+<% } %>
