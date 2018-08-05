@@ -156,7 +156,7 @@ module.exports = function(passport) {
             } else {
                     var user = req.user;
                     user.facebook.id = profile.id;
-                    user.facebook. token = token;
+                    user.facebook.token = token;
                     user.facebook.name = profile.displayName;
                     user.facebook.userID = profile.userID;
 

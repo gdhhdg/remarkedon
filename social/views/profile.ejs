@@ -4,7 +4,7 @@
 
 <% if (user.local.email || user.local.username) {%>
 <h3>Username: <%= user.local.username %></h3>
-<a href="#">Remove Email</a>
+<a href="/remove/local">Remove Email</a>
 <% } else { %>
 <br>
 <a href="/connect/local">Connect Your Email and Username</a>
@@ -12,7 +12,7 @@
 
 <% if (user.facebook.token)  {%>
 <h3>Facebook: <%= user.facebook.name %></h3>
-<a href="#">Remove Facebook</a>
+<a href="/remove/facebook">Remove Facebook</a>
 <% } else { %>
 <br>
 <a href="/connect/facebook">Connect Your facebook</a>
@@ -20,7 +20,7 @@
 
 <% if (user.google.token)  {%>
 <h3>Google Name: <%= user.google.name %></h3>
-<a href="#">Remove Gmail</a>
+<a href="/remove/google">Remove Gmail</a>
 <% } else { %>
 <br>
 <a href="/connect/google">Connect Your Gmail </a>

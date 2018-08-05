@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const User = require('../models/user');
 
 
-                /////////Google Routes////////////////////
+                /////////GOOGLE AUTHORIZE////////////////////
     router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
 
     router.get('/auth/google/callback', passport.authenticate('google',{
@@ -11,7 +12,7 @@ const passport = require('passport');
         failureRedirect:'/login'
     }));
 
-    //auth
+            /////////GOOGLE CONNECT////////////////////
     router.get('/connect/google',passport.authorize('google',{
         scope:['profile','email']
     }));
@@ -22,7 +23,7 @@ const passport = require('passport');
 
 
 
-                /////////Facebook Routes////////////////////
+                /////////FACEBOOK AUTHORIZE////////////////////
     router.get('/auth/facebook', passport.authenticate('facebook',
         {scope:['public_profile','email']}
         ));
@@ -31,7 +32,7 @@ const passport = require('passport');
         successRedirect: '/profile',
         failureRedirect:'/login',
     }));
-    //Authorize
+    ///////////////////FACEBOOK CONNECT /////////////////////////
    router.get('/connect/facebook',passport.authorize('facebook',{
        scope:['public_profile','email']
    }));
@@ -48,7 +49,7 @@ const passport = require('passport');
         failureRedirect:'/login'
     }));
 
-            //////////////////////home Route/////////////////////////
+            //////////////////////HOME /////////////////////////
     router.get('/', function (req, res, next) {
         res.render('index', {title: 'Home', message: ''});
     });
@@ -56,7 +57,7 @@ const passport = require('passport');
     router.get('/login', function (req, res, next) {
         res.render('login', {title: 'login', message: req.flash('loginMessage')});
     });
-
+                /////////LOCAL LOGIN////////////////////
     router.post('/login', passport.authenticate('local-login', {
         successRedirect: '/profile',
         failureRedirect: '/login',
@@ -74,7 +75,7 @@ const passport = require('passport');
         failureFlash: true
     }));
 
-    //local connect
+    //////////////////////local connect//////////////////
     router.get('/connect/local', function (req,res) {
         res.render('connect-local',{title: "Local Login", message:req.flash('loginMessage')});
     });
@@ -85,10 +86,50 @@ const passport = require('passport');
         failureFlash: true
     }));
 
+            ///////////////////REMOVE ACCOUNTS////////////////////
+
+    router.get('/remove/facebook', function (req,res) {
+        let user = req.user;
+        user.facebook.userID = undefined;
+        user.facebook.password = undefined;
+        user.facebook.name = undefined;
+        user.facebook.id = undefined;
+        user.facebook.token = undefined;
+        user.save(function (err) {
+            if(err)
+                throw err;
+            res.redirect('/profile');
+        });
+
+    });
+
+router.get('/remove/google', function (req,res) {
+    let user = req.user;
+    user.google.id = undefined;
+    user.google.password = undefined;
+    user.google.name = undefined;
+    user.google.token = undefined;
+    user.save(function (err) {
+        if(err)
+            throw err;
+        res.redirect('/profile');
+    });
+
+});
+
+    router.get('/remove/local', function (req,res) {
+            let user = req.user;
+            user.local.email = undefined;
+            user.local.password = undefined;
+            user.save(function (err) {
+                if(err)
+                    throw err;
+                res.redirect('/profile');
+            })
+    });
 
 
-
-    router.get('/profile', isLoggedIn, function (req, res, next) {
+router.get('/profile', isLoggedIn, function (req, res, next) {
         res.render('profile', {title: 'Profile', user: req.user});
     });
 
