@@ -76,10 +76,10 @@ const passport = require('passport');
 
     //local connect
     router.get('/connect/local', function (req,res) {
-        res.render('connect-local',{message:req.flash('loginMessage')});
+        res.render('connect-local',{title: "Local Login", message:req.flash('loginMessage')});
     });
 
-    router.post('/connect/local', passport.authorize('local-signup', {
+    router.post('/connect/local', passport.authenticate('local-signup', {
         successRedirect: '/profile',
         failureRedirect:'/login',
         failureFlash: true
