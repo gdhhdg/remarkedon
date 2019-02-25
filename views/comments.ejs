@@ -1,0 +1,21 @@
+<% include head.ejs %>
+<% include site_search.ejs%>
+<h1><%= title %></h1>
+<div class="url-wrap">
+    <img src="//image.thum.io/get/https://www.<%= String (url) %>/" />
+
+</div>
+
+<div class="comment-wrap">
+    <% if (login === true){ %>
+    <% include comment_form.ejs %>
+    <% } %>
+    <%if( comments === "No Comments"){ %>
+    <p>No comments</p>
+    <%}else {%>
+    <% for(i = 0; i < comments.comment.length; i++) {%>
+    <p><%= comments.comment[i] %></p>
+    <%}%>
+    <%}%>
+
+</div>

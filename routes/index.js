@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const User = require('../models/user');
-
+const Comment = require('../models/comments');
 
                 /////////GOOGLE AUTHORIZE////////////////////
     router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
@@ -144,4 +144,75 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
         res.redirect('/');
 
 };
+
+
+    ///////////////////C O M M E N T S  R O U T E S\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+router.get('/comments/:url', function (req,res,next) {
+    let url = encodeURIComponent(req.params.url);
+    let login;
+    if (req.user){
+        login = true;
+    } else {
+        login = false;
+    }
+
+    Comment.findOne({'url':"https://" + url}).exec( function (err, result) {
+        if (err) {
+            res.render('comments', {title: 'Comments', user: req.user, url: "Error", login:login});
+
+        } else {
+            console.log(result);
+            res.render('comments', {title: 'Comments', user: req.user, url: url, comments: result, login:login});
+        }
+    });
+});
+
+router.get('/find/webUrl/:web', function (req,res,next) {
+    let login;
+    if (req.user){
+        login = true;
+    } else {
+        login = false;
+    }
+
+    let webUrl =req.query.webUrl;
+   // webUrl = webUrl.replace(/(.*?)=/,"");
+   // console.log("url is ", encodeURIComponent(webUrl));
+    Comment.findOne({'url': "https://www." + webUrl}).exec( function (err, result) {
+        if (err) {
+            res.render('comments', {title: 'Error', user: req.user, url: webUrl, comments: "none",login:login});
+
+        } else if (result === null) {
+            res.render('comments', {title: 'Comments', user: req.user, url: webUrl, comments: "No Comments", login:login});
+        }else {
+            console.log('results:',result);
+            res.render('comments', {title: 'Comments', user: req.user, url: webUrl, comments: result, login:login});
+        }
+    });
+});
+
+
+
+
+router.post('/submit/:url',isLoggedIn, function (req,res,next) {
+
+    let url = req.params.url;
+
+    Comment.findOneAndUpdate({'url': url}, {$push: {comment:req.body.comment}/*}, "date": new Date(),"url":req.params.url*/ },{ upsert:true}).exec(function (err, result) {
+
+        if(err) {
+            res.send(err);
+        } else {
+            console.log(result);
+            res.redirect('back');
+        }
+
+    });
+});
+
+
+
+
+
+
 module.exports = [router,express];

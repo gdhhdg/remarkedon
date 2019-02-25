@@ -1,7 +1,6 @@
 <% include head.ejs %>
 <h1>Profile</h1> <a href="/logout"> <button>Logout</button> </a>
-
-
+<a href="/comments"><button>Comments</button></a>
 <% if (user.local.email || user.local.username) {%>
 <h3>Username: <%= user.local.username %></h3>
 <a href="/remove/local">Remove Email</a>
