@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     function process()
     {
-        const url="http://localhost:3000/comments/http://www." + document.getElementById("webUrl").value;
+        const url="http://localhost:3333/comments/http://www." + document.getElementById("webUrl").value;
         location.href=url;
         return false;
     }
