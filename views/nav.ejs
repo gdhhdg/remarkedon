@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="/stylesheets/searchbar.css">
+<nav class="nav-extended">
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo">Open Comments</a>
+
+        <ul class="right hide-on-med-and-down">
+            <form action="/find/webUrl/webUrl">
+                    <div class="wrap">
+                        <div class="search input-field">
+                          <li class="input-li">  <input type="text" id="webUrl" class="" name="webUrl" placeholder="What are you looking for?"></li>
+                           <li> <button type="submit" class="searchButton">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form></li>
+            <li><a class="modal-trigger" id="signupModal" href="#">Signup</a></li>
+            <li><a class="modal-trigger" id="LoginModal" href="#">Login</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<!-- Modal Structure -->
+
+<!-- The Modal -->
+<div id="Signup" class=" modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <% include signup.ejs %>
+    </div>
+
+</div>
+
+<div id="Login" class="modal LoginModal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close_1">&times;</span>
+        <% include login.ejs %>
+    </div>
+
+</div>

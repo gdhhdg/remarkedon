@@ -41,17 +41,17 @@ module.exports = function(passport) {
     }, function (req, token, refreshToken, profile, done) {
         process.nextTick(function () {
             if(!req.user){
-                User.findOne({'google.id': profile.id}, function (err, user) {
+                User.findOne({'user.google.id': profile.id}, function (err, user) {
                 if (err)
                     return done(err);
                 if (user) {
                     return done(null, user);
                 } else {
                     let newUser = new User();
-                    newUser.google.id = profile.id;
-                    newUser.google.token = token;
-                    newUser.google.name = profile.displayName;
-                    newUser.google.email = profile.emails[0].value;
+                    newUser.user.google.id = profile.id;
+                    newUser.user.google.token = token;
+                    newUser.user.google.name = profile.displayName;
+                    newUser.user.google.email = profile.emails[0].value;
 
                     newUser.save(function (err) {
                         if (err)
@@ -63,10 +63,10 @@ module.exports = function(passport) {
             })
         } else {
                 var user = req.user;
-                user.google.id = profile.id;
-                user.google.token = token;
-                user.google.name = profile.displayName;
-                user.google.email = profile.emails[0].value;
+                user.user.google.id = profile.id;
+                user.user.google.token = token;
+                user.user.google.name = profile.displayName;
+                user.user.google.email = profile.emails[0].value;
 
                 user.save(function (err) {
                     if(err)
@@ -80,36 +80,36 @@ module.exports = function(passport) {
     // =========================================================================
     // Twitter LOGIN =============================================================
     // =========================================================================
-    passport.use(new TwitterStrategy({
-        consumerKey: configAuth.twitterAuth.consumerKey,
-        consumerSecret:configAuth.twitterAuth.consumerSecret,
-        callbackURL:configAuth.twitterAuth.callbackURL
-    },
-        function (token, tokenSecret, profile, done) {
-            process.nextTick(function () {
-                User.findOne({'twitter.id':profile.id},function (err,user) {
-                    if (err)
-                        return done(err);
-                    if(user) {
-                        return done (null, user);
-                    } else {
-                        const newUser = new User();
-                        newUser.twitter.id = profile.id;
-                        newUser.twitter.token = token;
-                        newUser.twitter.username = profile.username;
-                        newUser.twitter.displayName = profile.displayName;
-
-                        newUser.save(function(err){
-                            if (err)
-                                throw err;
-                            return done(null,newUser);
-                        });
-
-                    }
-
-                });
-            });
-        }));
+    // passport.use(new TwitterStrategy({
+    //     consumerKey: configAuth.twitterAuth.consumerKey,
+    //     consumerSecret:configAuth.twitterAuth.consumerSecret,
+    //     callbackURL:configAuth.twitterAuth.callbackURL
+    // },
+    //     function (token, tokenSecret, profile, done) {
+    //         process.nextTick(function () {
+    //             User.findOne({'twitter.id':profile.id},function (err,user) {
+    //                 if (err)
+    //                     return done(err);
+    //                 if(user) {
+    //                     return done (null, user);
+    //                 } else {
+    //                     const newUser = new User();
+    //                     newUser.twitter.id = profile.id;
+    //                     newUser.twitter.token = token;
+    //                     newUser.twitter.username = profile.username;
+    //                     newUser.twitter.displayName = profile.displayName;
+    //
+    //                     newUser.save(function(err){
+    //                         if (err)
+    //                             throw err;
+    //                         return done(null,newUser);
+    //                     });
+    //
+    //                 }
+    //
+    //             });
+    //         });
+    //     }));
 
 
 
@@ -130,7 +130,7 @@ module.exports = function(passport) {
                 if(!req.user){
 
                     User.findOne({
-                    'facebook.id': profile.id
+                    'user.facebook.id': profile.id
                 }, function (err, user) {
                     if (err)
                         return done(err);
@@ -139,10 +139,10 @@ module.exports = function(passport) {
                         return done(null, user);
                     } else {
                         var newUser = new User();
-                        newUser.facebook.id = profile.id;
-                        newUser.facebook.token = token;
-                        newUser.facebook.userID = profile.userID;
-                        newUser.facebook.name = profile.displayName;
+                        newUser.user.facebook.id = profile.id;
+                        newUser.user.facebook.token = token;
+                        newUser.user.facebook.userID = profile.userID;
+                        newUser.user.facebook.name = profile.displayName;
                         // newUser.facebook.email = profile.emails[0].value;
 
                         newUser.save(function (err) {
@@ -155,10 +155,10 @@ module.exports = function(passport) {
                 });
             } else {
                     var user = req.user;
-                    user.facebook.id = profile.id;
-                    user.facebook.token = token;
-                    user.facebook.name = profile.displayName;
-                    user.facebook.userID = profile.userID;
+                    user.user.facebook.id = profile.id;
+                    user.user.facebook.token = token;
+                    user.user.facebook.name = profile.displayName;
+                    user.user.facebook.userID = profile.userID;
 
                     user.save(function (err) {
                         if(err)
@@ -178,7 +178,6 @@ module.exports = function(passport) {
     passport.use('local-signup', new LocalStrategy({
             // by default, local strategy uses username and password, we will override with email
             usernameField:'email',
-           // emailField : 'email',
             passwordField : 'password',
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
@@ -187,7 +186,7 @@ module.exports = function(passport) {
             process.nextTick(function(){
                 // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            User.findOne({'local.email': email}, function (err, existing) {
+            User.findOne({'user.local.email': email}).exec( function (err, existing) {
                 // if there are any errors, return the error
                 if (err)
                     return done(err);
@@ -198,9 +197,9 @@ module.exports = function(passport) {
                 }
                    else if (req.user) {
                         let user = req.user;
-                        user.local.email = email;
+                        user.user.local.email = email;
                         //user.local.username = username;
-                        user.local.password = user.generateHash(password);
+                        user.user.local.password = user.generateHash(password);
                         user.save(function (err) {
                             if (err)
                                 throw err;
@@ -221,9 +220,9 @@ module.exports = function(passport) {
                             var newUser = new User();
 
                             // set the user's local credentials
-                            newUser.local.email = email;
-                            newUser.local.username = req.body.username;
-                            newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
+                            newUser.user.local.email = email;
+                            newUser.user.local.username = req.body.username;
+                            newUser.user.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 
                             // save the user
                             newUser.save(function (err) {
@@ -237,6 +236,7 @@ module.exports = function(passport) {
                 //}
 
             });
+
         }));
 
 
@@ -257,7 +257,7 @@ module.exports = function(passport) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
             // var criteria = (username.indexOf('@') === -1) ? {'local.email': email} : {'local.email': username};
-            User.findOne({'local.email': email}, function (err, user) {
+            User.findOne({'user.local.email': email}).populate('comment').exec( function (err, user) {
                 // if there are any errors, return the error before anything else
                 if (err)
                     return done(err);

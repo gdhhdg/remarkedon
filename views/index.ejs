@@ -1,19 +1,30 @@
 <% include head.ejs %>
-<% include site_search.ejs %>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  <div class="container">
+  <% if (loginState === true) {%>
+<body>
+<% include nav_logged_in.ejs %>
+<div class="container">
     <div class="row">
-          <div class="col s6">
-            <h2>Sign In</h2>
-          <% include login.ejs %>
-          </div>
-           <div class="col s6">
-             <h2>Join</h2>
-           <% include signup.ejs %>
-           </div>
-         </div>
+  <h2><%- title %></h2>
+<% include site_search.ejs %>
+<h4>Copy in any URL to search for a comment page.</h4>
+    </div>
+</div>
+  <% } else{ %>
+<body>
+<% include nav.ejs %>
+
+  <div class="container">
+      <div class="row">
+         <h2><i class="fa fa-angle-right"></i>Bring the Conversation Together</h2>
+          <h2><i class="fa fa-angle-right"></i>Any Webpage</h2>
+          <h2><i class="fa fa-angle-right"></i>Free Speech for All</h2>
+          <h4><%- title %></h4>
+          <% include site_search.ejs %>
+          <h4>Copy in any URL to search for a comment page.</h4>
+          <h4>Sign-up to leave a comment.</h4>
+      </div>
   </div>
+  <% } %>
+
   </body>
 </html>

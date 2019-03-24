@@ -1,10 +1,9 @@
 <% include head.ejs %>
 <div class="row">
     <form class="col s12" action="/signup" method="post">
-        <% if (message.length > 0) {%>
-        <div class="alert alert-danger"><%= message %></div>
-        <% } %>
         <div class="row">
+            <a href="/auth/facebook"><i class="fa fa-2x fa-facebook"></i></a>
+            <a href="/auth/google"><i class="fa fa-2x fa-google"></i></a>
             <div class="input-field col s12">
                 <input  id="username" type="text" class="validate" name="username">
                 <label for="username">Username</label>

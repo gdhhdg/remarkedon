@@ -1,11 +1,7 @@
 <% include head.ejs %>
 <div class="row">
-    <a href="/auth/facebook"><button>Facebook</button></a>
-    <a href="/auth/twitter"><button>Twitter</button></a>
-    <a href="/auth/google"><button>Google</button></a>
-    <% if (message.length > 0) {%>
-    <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+    <a href="/auth/facebook"><i class="fa fa-2x fa-facebook"></i></a>
+    <a href="/auth/google"><i class="fa fa-2x fa-google"></i></a>
     <form class="col s12" action="/login" method="post">
         <div class="row">
             <div class="input-field col s12">

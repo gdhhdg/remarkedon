@@ -1,26 +1,32 @@
 <% include head.ejs %>
-<h1>Profile</h1> <a href="/logout"> <button>Logout</button> </a>
-<a href="/comments"><button>Comments</button></a>
-<% if (user.local.email || user.local.username) {%>
-<h3>Username: <%= user.local.username %></h3>
+<% include nav_logged_in.ejs %>
+<div class="container">
+    <div class="row">
+<% if (user.user.local.email || user.user.local.username) {%>
+<h3>Username: <%= user.user.local.username %></h3>
 <a href="/remove/local">Remove Email</a>
 <% } else { %>
 <br>
 <a href="/connect/local">Connect Your Email and Username</a>
 <% } %>
 
-<% if (user.facebook.token)  {%>
-<h3>Facebook: <%= user.facebook.name %></h3>
+<% if (user.user.facebook.token)  {%>
+<h3>Facebook: <%= user.user.facebook.name %></h3>
 <a href="/remove/facebook">Remove Facebook</a>
 <% } else { %>
 <br>
 <a href="/connect/facebook">Connect Your facebook</a>
 <% } %>
 
-<% if (user.google.token)  {%>
-<h3>Google Name: <%= user.google.name %></h3>
+<% if (user.user.google.token)  {%>
+<h3>Google Name: <%= user.user.google.name %></h3>
 <a href="/remove/google">Remove Gmail</a>
 <% } else { %>
 <br>
 <a href="/connect/google">Connect Your Gmail </a>
 <% } %>
+    </div>
+        <a class="btn" href="/mycomments">Comments</a>
+
+    </div>
+</div>

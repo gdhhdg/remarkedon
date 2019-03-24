@@ -1,32 +1,36 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
+//const commentSchema = require('./comments').schema;
+const Schema = mongoose.Schema;
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
+    user: {
+        local: {
+            username: String,
+            email: String,
+            password: String,
+        },
+        facebook: {
+            id: String,
+            token: String,
+            name: String,
+            email: String
+        },
+        twitter: {
+            id: String,
+            token: String,
+            displayName: String,
+            username: String
+        },
+        google: {
+            id: String,
+            token: String,
+            email: String,
+            name: String
 
-    local            : {
-        username     : String,
-        email        : String,
-        password     : String,
+        }
     },
-    facebook         : {
-        id           : String,
-        token        : String,
-        name         : String,
-        email        : String
-    },
-    twitter          : {
-        id           : String,
-        token        : String,
-        displayName  : String,
-        username     : String
-    },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    }
-
+    comment: [{type: Schema.Types.ObjectId, ref:'CommentList'}]
 });
 
 userSchema.methods.generateHash = function (password) {
@@ -37,4 +41,6 @@ userSchema.methods.validPassword = function (password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 
-module.exports = mongoose.model('User',userSchema);
+
+
+module.exports = mongoose.model('User', userSchema);
