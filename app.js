@@ -21,8 +21,12 @@ var path = require('path');
 
 // configuration ===============================================================
 var configDB = require('./config/database.js');
-mongoose.connect(configDB.url); // connect to our database
-
+//mongoose.connect(configDB.url2,  {uri_decode_auth: true}, function(err,db){}); // connect to our database
+mongoose.connect(configDB.url2,
+{"auth":{"authSource":"remarkedon"},
+ "user":"RemarkedOn",
+"pass":"RemarkedonPassword1776",
+"useMongoClient":true});
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application

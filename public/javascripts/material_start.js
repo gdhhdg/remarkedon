@@ -1,8 +1,7 @@
 /**
  * Created by gunnerhatmaker on 7/31/18.
  */
-
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", function() {
     M.updateTextFields();
 
     function process()

@@ -31,9 +31,9 @@
     <%if(comments[i].user.user.local.username) {%>
     <% userName = comments[i].user.user.local.username %>
     <%} else if(comments[i].user.user.google.id) {%>
-    <% userName = comments[i].user.user.google.id %>
+    <% userName = comments[i].user.user.google.name %>
     <%} else if(comments[i].user.user.facebook.id) {%>
-    <% userName = comments[i].user.user.facebook.id %>
+    <% userName = comments[i].user.user.facebook.name %>
     <%}%>
     <tr>
         <td><span class="username"><%- userName %> said: </span><br><span class="main-comment"><%- comments[i].comment %></span> </td>

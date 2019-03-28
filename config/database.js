@@ -1,5 +1,7 @@
 
-const PW='GDHpassword+!1776';
+const PW='RemarkedonPassword1776';
 module.exports = {
-    'url': `mongodb://Gunner:${encodeURIComponent(PW)}@206.189.82.81:12027/remarkedon`
+    'url': `mongodb://RemarkedOn:${encodeURIComponent(PW)}@206.189.82.81:27017/remarkedon`,
+'url2':"mongodb://206.189.82.81:27017/remarkedon"
+//    'url2': 'mongodb://206.189.82.82:27017/remarkedon'
 }
