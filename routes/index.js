@@ -95,11 +95,11 @@ function captcha (req,res, next) {
     }));
 
     //////////////////////Local Auth////////////////////////////////
-    router.get('/signup', function (req, res, next) {
+    router.get('/signup',  function (req, res, next) {
         res.render('signup', {title: 'signup', message: req.flash('signupMessage')});
     });
 
-    router.post('/signup', passport.authenticate('local-signup', {
+    router.post('/signup', captcha, passport.authenticate('local-signup', {
         successRedirect: '/profile',
         failureRedirect: '/signup',
         failureFlash: true
