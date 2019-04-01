@@ -112,3 +112,6 @@ input{
   width: 100%;
 }
 
+.forgot_password{
+  display: none;
+}

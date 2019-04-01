@@ -58,5 +58,10 @@ document.addEventListener("DOMContentLoaded", function() {
         if (event.target === modal_login) {
             modal_login.style.display = "none";
         }
-    }
+    };
+    $('.forgot_password_button').click(function () {
+        $('.forgot_password').toggle();
+        $('.login').toggle();
+    });
+
 });

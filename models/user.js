@@ -30,7 +30,9 @@ const userSchema = new mongoose.Schema({
 
         }
     },
-    comment: [{type: Schema.Types.ObjectId, ref:'CommentList'}]
+    comment: [{type: Schema.Types.ObjectId, ref:'CommentList'}],
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 userSchema.methods.generateHash = function (password) {
@@ -38,7 +40,7 @@ userSchema.methods.generateHash = function (password) {
 };
 
 userSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
+    return bcrypt.compareSync(password, this.user.local.password);
 };
 
 

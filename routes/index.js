@@ -5,9 +5,13 @@ const mongoose = require('mongoose');
 const User = require('../models/user');
 const Comment = require('../models/comments');
 const commentlist = require('../models/commentList');
+const passwordRecovery = require('../models/passwordRecovery');
 const auth = require('../config/auth');
 const request = require('request');
-
+const async = require('async');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt-nodejs');
 
 //Captcha Middleware
 function captcha (req,res, next) {
@@ -88,11 +92,17 @@ function captcha (req,res, next) {
         res.render('login', {title: 'login', message: req.flash('loginMessage')});
     });
                 /////////LOCAL LOGIN////////////////////
-    router.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-        failureFlash: true,
-    }));
+    router.post('/login',
+        function (req,res,next) {
+
+
+            passport.authenticate('local-login', {
+                successRedirect: '/',
+                failureRedirect: '/login',
+                failureFlash: true,
+            })(req,res,next);
+        });
+
 
     //////////////////////Local Auth////////////////////////////////
     router.get('/signup',  function (req, res, next) {
@@ -116,7 +126,123 @@ function captcha (req,res, next) {
         failureFlash: true
     }));
 
-            ///////////////////REMOVE ACCOUNTS////////////////////
+
+    ///////////////////Password Reset ////////////////////////
+    //~~~~~~submit email~~~~~~~~//
+router.post('/forgotpassword', function (req, res, next) {
+    let token;
+    async.waterfall([
+        function(done) {
+            crypto.randomBytes(20, function(err, buf) {
+                 token = buf.toString('hex');
+                done(err, token);
+            });
+        },
+
+        function(token, done) {
+
+            User.findOneAndUpdate({ 'user.local.email': req.body.email },
+                {$set:{'resetPasswordToken':token,'resetPasswordExpires': Date.now() + 3600000}}, {new: false},
+            ).exec(function(err, user) {
+                    if (!user) {
+                        res.send('User not found');
+                    }
+                done(err, token, user);
+                }
+            )
+        },
+
+        function(token, user, done) {
+            const emailPW = '9rhFJJh=tAcFht$!';
+            const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:"+encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
+            const mailOptions = {
+                to: req.body.email,
+                from: 'passwordreset@demo.com',
+                subject: 'Node.js Password Reset',
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function(err) {
+                req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
+                done(err, 'done');
+            });
+        }
+
+    ], function(err) {
+        if (err) return next(err);
+        res.send('Check your email and follow the link.');
+    });
+});
+
+    //~~~~~~~~~~~ reset password route
+router.get('/reset/:token', function(req, res) {
+    // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
+    //     if (!user) {
+    //         req.flash('error', 'Password reset token is invalid or has expired.');
+    //         return res.redirect('/');
+    //     }
+        res.render('reset', {title: 'Forgot Password', token: req.params.token
+        });
+   // });
+});
+
+//~~~~~~~~~~~~~~ send new password
+router.post('/reset/:token', function(req, res) {
+    async.waterfall([
+        function(done) {
+        if (req.body.password !== req.body.password_conf){
+           return res.send('Passwords didn\'t match. Try again ');
+        }
+            const newPassword =  bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8),null);
+
+            User.findOneAndUpdate({ resetPasswordToken: req.params.token/*, resetPasswordExpires: { $gt: Date.now() }*/ },
+                {$set :{'user.local.password': newPassword, 'resetPasswordToken': "", 'resetPasswordExpires': ""}},
+                {new:true})
+                .exec( function(err, user) {
+                if (!user) {
+                    req.flash('error', 'Password reset token is invalid or has expired.');
+                    return res.redirect('back');
+                }else{
+                    done(err, user);
+                }
+                //
+                // user.local.password = req.body.password;
+                // user.resetPasswordToken = undefined;
+                // user.resetPasswordExpires = undefined;
+
+
+            });
+        },
+        function(user, done) {
+        console.log(JSON.stringify(user));
+            const emailPW = '9rhFJJh=tAcFht$!';
+            const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:"+encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
+            var mailOptions = {
+                to: user.user.local.email,
+                from: 'remarkedon@gmail.com',
+                subject: 'Your password has been changed',
+                text: 'Hello,\n\n' +
+                'This is a confirmation that the password for your account ' + user.user.local.email + ' has just been changed.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function(err) {
+                req.flash('success', 'Success! Your password has been changed.');
+                if (err) {
+                   return res.send('Try again');
+                }
+                else{
+                   return res.redirect('/');
+                }
+            });
+        }
+    ] )
+
+});
+
+
+
+///////////////////REMOVE ACCOUNTS////////////////////
 
     router.get('/remove/facebook', function (req,res) {
         let user = req.user;
@@ -192,7 +318,6 @@ router.get('/comments/:url', function (req,res,next) {
             res.render('comments', {title: 'Comments', user: req.user, url: "Hmmm...", login:login});
 
         } else {
-            console.log(result);
             res.render('comments', {title: 'Comments', user: req.user, url: url, comments: result, login:login});
         }
     });
@@ -285,7 +410,6 @@ router.get('/mycomments', isLoggedIn, function (req,res,next) {
         } else if (result === null) {
             res.render('error',{ title:'OOPS!', message: err});
         }else {
-            console.log('results:',result);
             res.render('mycomments', {title: 'My Comments', user: req.user, comments: result, login:login});
         }
     });

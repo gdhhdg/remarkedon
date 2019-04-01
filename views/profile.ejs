@@ -1,30 +1,31 @@
 <% include head.ejs %>
 <% include nav_logged_in.ejs %>
 <div class="container">
-    <div class="row">
+    <div class="row"><ul>
 <% if (user.user.local.email || user.user.local.username) {%>
-<h3>Username: <%= user.user.local.username %></h3>
-<a href="/remove/local">Remove Email</a>
+<li>Username: <%= user.user.local.username %></li>
+            <li>email address: user.user.local.email</li>
+<li><a href="/remove/local">Remove Email</a></li>
 <% } else { %>
-<br>
-<a href="/connect/local">Connect Your Email and Username</a>
+
+<li><a href="/connect/local">Connect Your Email and Username</a></li>
 <% } %>
 
 <% if (user.user.facebook.token)  {%>
-<h3>Facebook: <%= user.user.facebook.name %></h3>
-<a href="/remove/facebook">Remove Facebook</a>
+<li>Facebook: <%= user.user.facebook.name %></li>
+<li><a href="/remove/facebook">Remove Facebook</a></li>
 <% } else { %>
-<br>
-<a href="/connect/facebook">Connect Your facebook</a>
+
+<li><a href="/connect/facebook">Connect Your facebook</a></li>
 <% } %>
 
 <% if (user.user.google.token)  {%>
-<h3>Google Name: <%= user.user.google.name %></h3>
-<a href="/remove/google">Remove Gmail</a>
+<li>Google Name: <%= user.user.google.name %></li>
+<li><a href="/remove/google">Remove Gmail</a></li>
 <% } else { %>
-<br>
-<a href="/connect/google">Connect Your Gmail </a>
+<li><a href="/connect/google">Connect Your Gmail </a></li>
 <% } %>
+        </ul>
     </div>
         <a class="btn" href="/mycomments">Comments</a>
 

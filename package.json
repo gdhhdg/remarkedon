@@ -6,10 +6,12 @@
     "start": "node ./bin/remarkedon"
   },
   "dependencies": {
+    "async": "^2.6.2",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.18.3",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",
+    "crypto": "^1.0.1",
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.16.0",
@@ -19,6 +21,7 @@
     "mongodb": "^3.1.1",
     "mongoose": "^5.2.6",
     "morgan": "~1.9.0",
+    "nodemailer": "^6.0.0",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-google-oauth": "^1.0.0",

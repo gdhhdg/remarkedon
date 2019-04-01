@@ -22,11 +22,19 @@ var path = require('path');
 // configuration ===============================================================
 var configDB = require('./config/database.js');
 //mongoose.connect(configDB.url2,  {uri_decode_auth: true}, function(err,db){}); // connect to our database
-mongoose.connect(configDB.url2,
+mongoose.connect(configDB.url,
 {"auth":{"authSource":"remarkedon"},
  "user":"RemarkedOn",
 "pass":"RemarkedonPassword1776",
-"useMongoClient":true});
+"useMongoClient":true},
+// { server: {
+//     // sets how many times to try reconnecting
+//     reconnectTries: Number.MAX_VALUE,
+//         // sets the delay between every retry (milliseconds)
+//         reconnectInterval: 1000
+// }
+// }
+);
 require('./config/passport')(passport); // pass passport for configuration
 
 // set up our express application
