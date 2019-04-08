@@ -1,8 +1,7 @@
 /**
  * Created by gunnerhatmaker on 7/31/18.
  */
-document.addEventListener("DOMContentLoaded", function() {
-    M.updateTextFields();
+$(document).ready(function () {
 
     function process()
     {
@@ -64,4 +63,7 @@ document.addEventListener("DOMContentLoaded", function() {
         $('.login').toggle();
     });
 
+    $(".button-collapse").sideNav();
+
 });
+

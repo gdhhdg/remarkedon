@@ -94,14 +94,18 @@ function captcha (req,res, next) {
                 /////////LOCAL LOGIN////////////////////
     router.post('/login',
         function (req,res,next) {
-
-
+        try {
             passport.authenticate('local-login', {
                 successRedirect: '/',
                 failureRedirect: '/login',
-                failureFlash: true,
-            })(req,res,next);
+                failureFlash: false,
+            })(req, res, next);
+        }
+        catch(err){
+            res.redirect('back');
+        }
         });
+
 
 
     //////////////////////Local Auth////////////////////////////////

@@ -1,37 +1,33 @@
 <% include head.ejs %>
-  <% if (loginState === true) {%>
+<% if (loginState === true) {%>
 <body>
-<% include nav_logged_in.ejs %>
-<div class="container">
-    <div class="row">
-  <h2><%- title %></h2>
-<% include site_search.ejs %>
-<h4>Copy in any URL to search for a comment page.</h4>
+<% include nav_loggedin_home.ejs %>
+<%include gradient_search.ejs%>
+<% } else{ %>
+<body>
+<div class="full-wrap">
+<div class="row" >
+    <div class="col s12 m8" style="padding:0; margin: 0 auto" >
+        <div class="gradient">
+        <%include gradient_search.ejs%>
+        </div>
+    </div>
+    <div class="col s12 m4">
+        <div class="login-wrapper">
+        <h3>Login</h3>
+        <% include login.ejs%>
+        or <br>
+            <div class="btn-wrap">
+        <a href="/signup">
+            <button class="btn waves-effect waves-light"  name="signup-link">Sign Up
+                <i class="material-icons right"></i>
+            </button></a>
+            </div>
+        </div>
     </div>
 </div>
-  <% } else{ %>
-<body>
-<% include nav.ejs %>
-
-  <div class="container">
-      <div class="row">
-          <div class="col s6">
-          <h3><strike>Comment Deleted</strike></h3>
-          <h3><strike>Blocked</strike></h3>
-          <h3><strike>Comment Removed</strike></h3>
-          </div>
-          <div class="col s6">
-              <h3>Any Site</h3>
-              <h3>Free Speech for All</h3>
-              <h3>Bring the Conversation Together</h3>
-          </div>
-          <h4><%- title %></h4>
-          <% include site_search.ejs %>
-          <h4>Copy in any URL to search for a comment page.</h4>
-          <h4>Sign-up to leave a comment.</h4>
-      </div>
-  </div>
-  <% } %>
-
-  </body>
+</div>
+<% } %>
+<%include footer.ejs%>
+</body>
 </html>

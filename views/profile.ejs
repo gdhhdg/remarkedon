@@ -1,10 +1,10 @@
 <% include head.ejs %>
-<% include nav_logged_in.ejs %>
+<% include nav_loggedin_home.ejs %>
 <div class="container">
     <div class="row"><ul>
 <% if (user.user.local.email || user.user.local.username) {%>
 <li>Username: <%= user.user.local.username %></li>
-            <li>email address: user.user.local.email</li>
+            <li>email address: <%= user.user.local.email %></li>
 <li><a href="/remove/local">Remove Email</a></li>
 <% } else { %>
 

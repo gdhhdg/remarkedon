@@ -1,9 +1,5 @@
 <% include head.ejs %>
-<% if (login === true){ %>
-<% include nav_logged_in.ejs %>
-<%}else {%>
-<% include nav.ejs%>
-<%}%>
+<% include nav_loggedin_search.ejs%>
 <div class="container">
 <div class="url-heading"> <%= url %> </div>
 <div class="url-wrap">

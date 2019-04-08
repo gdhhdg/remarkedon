@@ -1,9 +1,11 @@
-<link rel="stylesheet" href="/stylesheets/searchbar.css">
-<nav class="nav-extended">
-    <div class="nav-wrapper">
-        <a href="/" class="brand-logo">Open Comments</a>
 
-        <ul class="right hide-on-med-and-down">
+<link rel="stylesheet" href="/stylesheets/searchbar.css">
+  <div class="navbar">
+    <nav class="">
+        <a href="#" data-activates="mobile-demo" id="menu-button" class="button-collapse"><i class="fas fa-bars fa-7x"></i></a>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo hide-on-med-and-down">Open Comments</a>
+        <ul class="right">
             <form action="/find/webUrl/webUrl">
                     <div class="wrap">
                         <div class="search input-field">
@@ -14,12 +16,19 @@
                         </div>
                     </div>
                 </form></li>
+        </ul>
+       <ul id="side-nav-links" class="right hide-on-med-and-down">
             <li><a class="modal-trigger" id="signupModal" href="#">Signup</a></li>
             <li><a class="modal-trigger" id="LoginModal" href="#">Login</a></li>
         </ul>
     </div>
-</nav>
 
+</nav>
+  </div>
+<ul class="side-nav" id="mobile-demo">
+    <li><a class=""  href="/signup">Signup</a></li>
+    <li><a class=""  href="/login">Login</a></li>
+</ul>
 
 <!-- Modal Structure -->
 

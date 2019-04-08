@@ -6,9 +6,10 @@
   --title-color:#fafafa;
 }
 body {
-    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   width: 100%;
   min-width: 100%;
+  min-height: 100%;
 }
 
 a {
@@ -58,7 +59,7 @@ h2 :after {
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
+  z-index: 100; /* Sit on top */
   left: 0;
   top: -50%;
   bottom: -50%;
@@ -108,10 +109,119 @@ i {
   background-color: #1e88e5!important;
   box-shadow: 0 .5em #666;
 }
-input{
-  width: 100%;
-}
+
 
 .forgot_password{
   display: none;
+}
+
+@media only screen and (min-width: 993px){
+  nav a.button-collapse {
+  }
+}
+.button-collapse{
+  color:black;
+
+}
+
+.nav  > li {
+  color: black!important;
+}
+
+#mobile-demo > li  {
+  font-size: 2em;
+  padding: 1em;
+  margin-top: 1em;
+  background-color: whitesmoke;
+
+}
+
+
+
+#sidenav-overlay {
+  z-index: 900!important;
+  opacity: 5!important;
+  color: black;
+}
+
+
+#mobile-demo {
+  width: 50%;
+}
+
+.gradient-wrap{
+  background-image: linear-gradient(to right top, #5798f9, #3ab0ff, #3fc6ff, #62d9fb, #8beaf7);
+  min-height: 100%;
+  display: table;
+  width: 100%;
+}
+.home-tag{
+  color:white;
+  text-align: center;
+}
+.sidenav {
+position: absolute;
+  z-index: 1000;
+}
+.login-wrapper{
+  text-align: center;
+}
+
+.btn-wrap{
+  margin: 1em;
+}
+
+.index-wrapper{
+  height: 100%;
+}
+.login-wrap{
+  height: 100%;
+}
+
+.gradient{
+  height: 100vh;
+
+}
+
+.main-title{
+  color:white;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.tags {
+  text-align: center;
+}
+
+.home-search-bar{
+  display: table-cell;
+  vertical-align: middle;
+  padding: 1em;
+
+}
+/*Logo color*/
+.filter-white{
+  filter: invert(1);
+}
+
+.filter-black{
+  filter: invert(.2);
+}
+
+
+.main-logo{
+  height: 25vh;
+}
+
+
+.brand-logo {
+  height: 100%!important;
+  color: black!important;
+}
+.brand-main{
+  height: 100%;
+}
+
+.full-wrap{
+  height: 100%;
 }
