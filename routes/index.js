@@ -13,21 +13,34 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt-nodejs');
 
+//Error
+function MyCustomError(customInfo)
+{
+    Error.captureStackTrace(this, this.constructor);
+    this.name = this.constructor.name;
+    this.message = "error:" + customInfo;
+}
+
 //Captcha Middleware
 function captcha (req,res, next) {
-    const Secret = auth.reCaptcha.secretKey;
-    let recaptcha_url = "https://www.google.com/recaptcha/api/siteverify?";
-    recaptcha_url += "secret=" + Secret + "&";
-    recaptcha_url += "response=" + req.body["g-recaptcha-response"] + "&";
-    recaptcha_url += "remoteip=" + req.connection.remoteAddress;
-    request(recaptcha_url, function(error, resp, body) {
-        body = JSON.parse(body);
-        if(body.success !== undefined && !body.success) {
-            res.send('Droid detected. We don\'t serve your kind here. You\'ll have to wait outside.');
-        } else {
-            next();
-        }
-    })}
+    try {
+        const Secret = auth.reCaptcha.secretKey;
+        let recaptcha_url = "https://www.google.com/recaptcha/api/siteverify?";
+        recaptcha_url += "secret=" + Secret + "&";
+        recaptcha_url += "response=" + req.body["g-recaptcha-response"] + "&";
+        recaptcha_url += "remoteip=" + req.connection.remoteAddress;
+        request(recaptcha_url, function (error, resp, body) {
+            body = JSON.parse(body);
+            if (body.success !== undefined && !body.success) {
+                res.send('Droid detected. We don\'t serve your kind here. You\'ll have to wait outside.');
+            } else {
+                next();
+            }
+        })
+    } catch(e){
+        return next(new MyCustomError('Loading Failed:'));
+    }
+}
 
                 /////////GOOGLE AUTHORIZE////////////////////
     router.get('/auth/google',passport.authenticate('google',{scope:['profile','email']}));
@@ -76,20 +89,35 @@ function captcha (req,res, next) {
 
             //////////////////////HOME /////////////////////////
     router.get('/', function (req, res, next) {
-        let login;
-        if (req.user){
-            login = true;
-            res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: '', user: req.user});
-        } else {
-            login = false;
-            res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: ''});
+        try {
+            let login;
+            if (req.user) {
+                login = true;
+                res.render('index', {
+                    title: 'Remarked On!',
+                    loginState: login,
+                    login: login,
+                    message: '',
+                    user: req.user
+                });
+            } else {
+                login = false;
+                res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: ''});
+
+            }
+        }catch(e){
+            return next(new MyCustomError('Something went wrong...'));
 
         }
 
     });
 
     router.get('/login', function (req, res, next) {
-        res.render('solo_login', {title: 'Log in', message: req.flash('loginMessage')});
+        try {
+            res.render('solo_login', {title: 'Log in', message: req.flash('loginMessage')});
+        } catch(e){
+            return next(new MyCustomError('Loading Failed:'));
+        }
     });
                 /////////LOCAL LOGIN////////////////////
     router.post('/login',
@@ -194,54 +222,53 @@ router.get('/reset/:token', function(req, res) {
 
 //~~~~~~~~~~~~~~ send new password
 router.post('/reset/:token', function(req, res) {
-    async.waterfall([
-        function(done) {
-        if (req.body.password !== req.body.password_conf){
-           return res.send('Passwords didn\'t match. Try again ');
-        }
-            const newPassword =  bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8),null);
 
-            User.findOneAndUpdate({ resetPasswordToken: req.params.token/*, resetPasswordExpires: { $gt: Date.now() }*/ },
-                {$set :{'user.local.password': newPassword, 'resetPasswordToken': "", 'resetPasswordExpires': ""}},
-                {new:true})
-                .exec( function(err, user) {
-                if (!user) {
-                    req.flash('error', 'Password reset token is invalid or has expired.');
-                    return res.redirect('back');
-                }else{
-                    done(err, user);
+    try {
+        async.waterfall([
+            function (done) {
+                if (req.body.password !== req.body.password_conf) {
+                    return res.send('Passwords didn\'t match. Try again ');
                 }
-                //
-                // user.local.password = req.body.password;
-                // user.resetPasswordToken = undefined;
-                // user.resetPasswordExpires = undefined;
+                const newPassword = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8), null);
 
+                User.findOneAndUpdate({resetPasswordToken: req.params.token/*, resetPasswordExpires: { $gt: Date.now() }*/},
+                    {$set: {'user.local.password': newPassword, 'resetPasswordToken': "", 'resetPasswordExpires': ""}},
+                    {new: true})
+                    .exec(function (err, user) {
+                        if (!user) {
+                            req.flash('error', 'Password reset token is invalid or has expired.');
+                            return res.redirect('back');
+                        } else {
+                            done(err, user);
+                        }
 
-            });
-        },
-        function(user, done) {
-        console.log(JSON.stringify(user));
-            const emailPW = '9rhFJJh=tAcFht$!';
-            const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:"+encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
-            var mailOptions = {
-                to: user.user.local.email,
-                from: 'remarkedon@gmail.com',
-                subject: 'Your password has been changed',
-                text: 'Hello,\n\n' +
-                'This is a confirmation that the password for your account ' + user.user.local.email + ' has just been changed.\n'
-            };
-            smtpTransport.sendMail(mailOptions, function(err) {
-                req.flash('success', 'Success! Your password has been changed.');
-                if (err) {
-                   return res.send('Try again');
-                }
-                else{
-                   return res.redirect('/');
-                }
-            });
-        }
-    ] )
-
+                    });
+            },
+            function (user, done) {
+                console.log(JSON.stringify(user));
+                const emailPW = '9rhFJJh=tAcFht$!';
+                const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:" + encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
+                var mailOptions = {
+                    to: user.user.local.email,
+                    from: 'remarkedon@gmail.com',
+                    subject: 'Your password has been changed',
+                    text: 'Hello,\n\n' +
+                    'This is a confirmation that the password for your account ' + user.user.local.email + ' has just been changed.\n'
+                };
+                smtpTransport.sendMail(mailOptions, function (err) {
+                    req.flash('success', 'Success! Your password has been changed.');
+                    if (err) {
+                        return res.send('Try again');
+                    }
+                    else {
+                        return res.redirect('/');
+                    }
+                });
+            }
+        ])
+    } catch(e){
+        return next(new MyCustomError('Loading Failed:'));
+    }
 });
 
 
@@ -309,28 +336,32 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
 
     ///////////////////C O M M E N T S  R O U T E S\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 router.get('/comments/:url', function (req,res,next) {
+    try {
     let url = encodeURIComponent(req.params.url);
     let login;
-    if (req.user){
+    if (req.user) {
         login = true;
     } else {
         login = false;
     }
 
-    Comment.findOne({url}).exec( function (err, result) {
+    Comment.findOne({url}).exec(function (err, result) {
         if (err) {
-            res.render('comments', {title: 'Comments', user: req.user, url: "Hmmm...", login:login});
+            res.render('comments', {title: 'Comments', user: req.user, url: "Hmmm...", login: login});
 
         } else {
-            res.render('comments', {title: 'Comments', user: req.user, url: url, comments: result, login:login});
+            res.render('comments', {title: 'Comments', user: req.user, url: url, comments: result, login: login});
         }
     });
+} catch(e){
+        return next(new MyCustomError('Loading Failed:'));
+    }
 });
 
 router.get('/find/webUrl/:web', function (req,res,next) {
-
+    try {
     let login;
-    if (req.user){
+    if (req.user) {
         login = true;
     } else {
         login = false;
@@ -338,28 +369,54 @@ router.get('/find/webUrl/:web', function (req,res,next) {
     ///checks for url
     urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/g;
     let webUrl = req.query.webUrl;
-    const strippedWebUrl = webUrl.replace(/https:\/\/|http:\/\/|:|www.|/gi , '');
+    const strippedWebUrl = webUrl.replace(/https:\/\/|http:\/\/|:|www.|/gi, '');
 
-    if(urlRegEx.test(strippedWebUrl)){
-    commentlist.find({url:"https:\/\/www." + strippedWebUrl.toString()}).populate({path:'user'}).exec( function (err, result) {
-        if (err) {
-            res.render('comments', {title: 'Couldn\'t get all the comments...', user: req.user, url: webUrl, comments: "none",login:login});
-        } else if (result === null) {
-            res.render('comments', {title: 'Comments', user: req.user, url: strippedWebUrl, comments: null, login:login});
-        }else {
-            res.render('comments', {title: 'Comments', user: req.user, url: strippedWebUrl, comments: result, login:login});
-        }
-    });
-} else {
+    if (urlRegEx.test(strippedWebUrl)) {
+        commentlist.find({url: "https:\/\/www." + strippedWebUrl.toString()}).populate({path: 'user'}).exec(function (err, result) {
+            if (err) {
+                res.render('comments', {
+                    title: 'Couldn\'t get all the comments...',
+                    user: req.user,
+                    url: webUrl,
+                    comments: "none",
+                    login: login
+                });
+            } else if (result === null) {
+                res.render('comments', {
+                    title: 'Comments',
+                    user: req.user,
+                    url: strippedWebUrl,
+                    comments: null,
+                    login: login
+                });
+            } else {
+                res.render('comments', {
+                    title: 'Comments',
+                    user: req.user,
+                    url: strippedWebUrl,
+                    comments: result,
+                    login: login
+                });
+            }
+        });
+    } else {
         let login;
-        if (req.user){
+        if (req.user) {
             login = true;
             res.render('index', {title: 'Not a URL', loginState: login, message: '', login: login, user: req.user});
         } else {
             login = false;
-            res.render('index', {title: 'Not a URL. Also, you should sign-up ;)', loginState: login, login: login, message: ''});
+            res.render('index', {
+                title: 'Not a URL. Also, you should sign-up ;)',
+                loginState: login,
+                login: login,
+                message: ''
+            });
 
         }
+    }
+} catch(e){
+        return next(new MyCustomError('Loading Failed:'));
     }
 });
 
@@ -367,10 +424,10 @@ router.get('/find/webUrl/:web', function (req,res,next) {
 
 
 router.post('/submit/:url',isLoggedIn, captcha, function (req,res,next) {
-
+try {
     let url = req.params.url;
     let webUrl = url;
-    const strippedWebUrl = webUrl.replace(/https:\/\/|http:\/\/|:|www.|/gi , '');
+    const strippedWebUrl = webUrl.replace(/https:\/\/|http:\/\/|:|www.|/gi, '');
     const fullURL = "https:\/\/www." + strippedWebUrl.toString();
     const id = mongoose.Types.ObjectId();
     let newDoc = new commentlist({
@@ -382,7 +439,7 @@ router.post('/submit/:url',isLoggedIn, captcha, function (req,res,next) {
     newDoc.save(function () {
         Promise.all([
             Comment.findOneAndUpdate({'url': fullURL}, {$push: {comment: newDoc}}, {upsert: true}).exec(),
-            Comment.findOneAndUpdate({'url': fullURL}, {$inc:{count:1}}, {upsert: true}).exec(),
+            Comment.findOneAndUpdate({'url': fullURL}, {$inc: {count: 1}}, {upsert: true}).exec(),
             User.findByIdAndUpdate(req.user._id, {$push: {'comment': id}}).exec()
         ])
             .then(function (err) {
@@ -392,14 +449,17 @@ router.post('/submit/:url',isLoggedIn, captcha, function (req,res,next) {
                     res.redirect('back');
                 }
             });
-            });
+    });
+} catch(e){
+    return next(new MyCustomError('Loading Failed:'));
+}
 });
 
 
 router.get('/mycomments', isLoggedIn, function (req,res,next) {
-
+try {
     let login;
-    if (req.user){
+    if (req.user) {
         login = true;
     } else {
         login = false;
@@ -407,16 +467,19 @@ router.get('/mycomments', isLoggedIn, function (req,res,next) {
 
     let id = req.user._id;
 
-    User.find({_id: id}).populate('comment').exec( function (err, result) {
+    User.find({_id: id}).populate('comment').exec(function (err, result) {
         if (err) {
-            res.render('error',{ title:'OOPS!', message: err});
+            res.render('error', {title: 'OOPS!', message: err});
 
         } else if (result === null) {
-            res.render('error',{ title:'OOPS!', message: err});
-        }else {
-            res.render('mycomments', {title: 'My Comments', user: req.user, comments: result, login:login});
+            res.render('error', {title: 'OOPS!', message: err});
+        } else {
+            res.render('mycomments', {title: 'My Comments', user: req.user, comments: result, login: login});
         }
     });
+} catch(e){
+    return next(new MyCustomError('Loading Failed:'));
+}
 });
 
 

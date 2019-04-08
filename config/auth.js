@@ -2,7 +2,7 @@ module.exports = {
     'facebookAuth': {
         'clientID':'509338236192362',
         'clientSecret':'154dd6bd269d74814473964281b9a27b',
-        'callbackURL':'http://remarkedon.com/auth/facebook/callback',
+        'callbackURL':'https://remarkedon.com/auth/facebook/callback',
         'profileURL':'https://graph.facebook.com/v2.5/me?fields=first_name,last_name,email',
         'profileFileds':['id', 'email', 'name'],
     },
