@@ -482,6 +482,10 @@ try {
 }
 });
 
+router.get('/privacy-policy', function (req,res, nest) {
+    res.render('facebook_privacy');
+});
+
 
 
 module.exports = [router,express];
