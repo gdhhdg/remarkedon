@@ -45,7 +45,7 @@ app.use(morgan('dev')); // log every request to the console
 app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser()); // get information from html forms
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, 'public/mouth_white', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

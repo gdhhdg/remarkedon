@@ -79,17 +79,17 @@ function captcha (req,res, next) {
         let login;
         if (req.user){
             login = true;
-            res.render('index', {title: 'Search', loginState: login, message: '', user: req.user});
+            res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: '', user: req.user});
         } else {
             login = false;
-            res.render('index', {title: 'Search', loginState: login, message: ''});
+            res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: ''});
 
         }
 
     });
 
     router.get('/login', function (req, res, next) {
-        res.render('login', {title: 'login', message: req.flash('loginMessage')});
+        res.render('solo_login', {title: 'Log in', message: req.flash('loginMessage')});
     });
                 /////////LOCAL LOGIN////////////////////
     router.post('/login',
@@ -110,7 +110,7 @@ function captcha (req,res, next) {
 
     //////////////////////Local Auth////////////////////////////////
     router.get('/signup',  function (req, res, next) {
-        res.render('signup', {title: 'signup', message: req.flash('signupMessage')});
+        res.render('solo_signup', {title: 'Sign Up', message: req.flash('signupMessage')});
     });
 
     router.post('/signup', captcha, passport.authenticate('local-signup', {
@@ -187,7 +187,7 @@ router.get('/reset/:token', function(req, res) {
     //         req.flash('error', 'Password reset token is invalid or has expired.');
     //         return res.redirect('/');
     //     }
-        res.render('reset', {title: 'Forgot Password', token: req.params.token
+        res.render('reset', {title: 'Forgot Password?', token: req.params.token
         });
    // });
 });
@@ -354,10 +354,10 @@ router.get('/find/webUrl/:web', function (req,res,next) {
         let login;
         if (req.user){
             login = true;
-            res.render('index', {title: 'Not a URL', loginState: login, message: '', user: req.user});
+            res.render('index', {title: 'Not a URL', loginState: login, message: '', login: login, user: req.user});
         } else {
             login = false;
-            res.render('index', {title: 'Not a URL. Also, you should sign-up ;)', loginState: login, message: ''});
+            res.render('index', {title: 'Not a URL. Also, you should sign-up ;)', loginState: login, login: login, message: ''});
 
         }
     }
