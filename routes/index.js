@@ -210,14 +210,8 @@ router.post('/forgotpassword', function (req, res, next) {
 
     //~~~~~~~~~~~ reset password route
 router.get('/reset/:token', function(req, res) {
-    // User.findOne({ resetPasswordToken: req.params.token, resetPasswordExpires: { $gt: Date.now() } }, function(err, user) {
-    //     if (!user) {
-    //         req.flash('error', 'Password reset token is invalid or has expired.');
-    //         return res.redirect('/');
-    //     }
         res.render('reset', {title: 'Forgot Password?', token: req.params.token
         });
-   // });
 });
 
 //~~~~~~~~~~~~~~ send new password
@@ -329,8 +323,9 @@ router.get('/profile', isLoggedIn, function (req, res, next) {
         if (req.isAuthenticated())
             return next();
         res.redirect('/');
-
 };
+
+
 
 
     ///////////////////C O M M E N T S  R O U T E S\\\\\\\\\\\\\\\\\\\\\\\\\\\\\

@@ -33,7 +33,8 @@ const userSchema = new mongoose.Schema({
     comment: [{type: Schema.Types.ObjectId, ref:'CommentList'}],
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    joinDate: {type: Date, default: Date.now }
+    joinDate: {type: Date, default: Date.now },
+    confirmed: {type: Boolean, default: false }
 });
 
 userSchema.methods.generateHash = function (password) {
