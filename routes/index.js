@@ -102,7 +102,7 @@ function captcha (req,res, next) {
                 });
             } else {
                 login = false;
-                res.render('index', {title: 'Remarked On!', loginState: login, login: login, message: ''});
+                res.render('index', {title: 'Remark On!', loginState: login, login: login, message: ''});
 
             }
         }catch(e){
@@ -317,7 +317,6 @@ router.get('/remove/google', function (req,res) {
 
 //////PROFILE
 router.get('/profile', isLoggedIn, function (req, res, next) {
-
         res.render('profile', {title: 'Profile', user: req.user, login: true});
     });
 
@@ -467,7 +466,11 @@ try {
 
     let id = req.user._id;
 
-    User.find({_id: id}).populate('comment').exec(function (err, result) {
+    User.find({_id: id}).populate({path:'comment', options: {
+        // limit: 2,
+        // sort: { created: -1}
+   }}
+    ).exec(function (err, result) {
         if (err) {
             res.render('error', {title: 'OOPS!', message: err});
 

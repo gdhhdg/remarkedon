@@ -52,6 +52,7 @@ module.exports = function(passport) {
                     newUser.user.google.token = token;
                     newUser.user.google.name = profile.displayName;
                     newUser.user.google.email = profile.emails[0].value;
+                    newUser.joinDate = Date.now();
 
                     newUser.save(function (err) {
                         if (err)
@@ -67,6 +68,8 @@ module.exports = function(passport) {
                 user.user.google.token = token;
                 user.user.google.name = profile.displayName;
                 user.user.google.email = profile.emails[0].value;
+                user.joinDate = Date.now();
+
 
                 user.save(function (err) {
                     if(err)
@@ -143,7 +146,7 @@ module.exports = function(passport) {
                         newUser.user.facebook.token = token;
                         newUser.user.facebook.userID = profile.userID;
                         newUser.user.facebook.name = profile.displayName;
-                        // newUser.facebook.email = profile.emails[0].value;
+                        newUser.joinDate = Date.now();
 
                         newUser.save(function (err) {
                             if (err)
@@ -159,6 +162,7 @@ module.exports = function(passport) {
                     user.user.facebook.token = token;
                     user.user.facebook.name = profile.displayName;
                     user.user.facebook.userID = profile.userID;
+                    user.joinDate = Date.now();
 
                     user.save(function (err) {
                         if(err)
@@ -198,7 +202,9 @@ module.exports = function(passport) {
                    else if (req.user) {
                         let user = req.user;
                         user.user.local.email = email;
-                        //user.local.username = username;
+                        user.joinDate = Date.now();
+
+                    //user.local.username = username;
                         user.user.local.password = user.generateHash(password);
                         user.save(function (err) {
                             if (err)
@@ -222,6 +228,7 @@ module.exports = function(passport) {
                             // set the user's local credentials
                             newUser.user.local.email = email;
                             newUser.user.local.username = req.body.username;
+                            newUser.joinDate = Date.now();
                             newUser.user.local.password = newUser.generateHash(password); // use the generateHash function in our user model
 
                             // save the user

@@ -225,3 +225,14 @@ position: absolute;
 .full-wrap{
   height: 100%;
 }
+.user-text{
+  color: black ;
+}
+
+.user-heading{
+  color: #595959;
+  padding:1em;
+}
+.remove-text{
+  font-size: .5em;
+}
