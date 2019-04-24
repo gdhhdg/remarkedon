@@ -132,3 +132,7 @@ input, select, textarea{
     padding: 12px 20px;
     color: black;
 }
+
+.social-link{
+    padding: 2em!important;
+}

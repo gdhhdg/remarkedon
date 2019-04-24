@@ -7,9 +7,9 @@
 }
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  width: 100%;
-  min-width: 100%;
+  width: 100vw;
   min-height: 100%;
+  margin: 0 auto;
 }
 
 a {
@@ -115,10 +115,7 @@ i {
   display: none;
 }
 
-@media only screen and (min-width: 993px){
-  nav a.button-collapse {
-  }
-}
+
 .button-collapse{
   color:black;
 
@@ -224,6 +221,8 @@ position: absolute;
 
 .full-wrap{
   height: 100%;
+  max-width: 100%;
+  width: 100%;
 }
 .user-text{
   color: black ;
@@ -236,3 +235,13 @@ position: absolute;
 .remove-text{
   font-size: .5em;
 }
+
+.social-link{
+  padding: 2em;
+  font-size: 1.5em;
+}
+.login-text{
+  padding: 1.5em;
+  font-size: 3.3em;
+}
+
