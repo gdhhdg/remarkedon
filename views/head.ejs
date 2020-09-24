@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-37047479-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-37047479-2');
+    </script>
+
+    <title><%= title %></title>
+    <!--Mobile fix-->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @-webkit-viewport { width: device-width; }
+        @-moz-viewport { width: device-width; }
+        @-ms-viewport { width: device-width; }
+        @-o-viewport { width: device-width; }
+        @viewport { width: device-width; }
+    </style>
+    <script>
+        // Important for windows phone 8
+        if (navigator.userAgent.match(/IEMobile\/10\.0/))
+        {
+            var msViewportStyle = document.createElement("style");
+            msViewportStyle.appendChild(document.createTextNode("@-ms-viewport{width:auto!important}"));
+            document.getElementsByTagName("head")[0].appendChild(msViewportStyle);
+        }
+    </script>
+
+    <!-- Compiled and minified CSS -->
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/materialize/materialize.min.css" >
+    <link rel="stylesheet" href="/stylesheets/searchbar.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+    <script src="https://use.fontawesome.com/a830ee61fa.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=reCAPTCHA_site_key"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <!--<script src="/javascripts/jquery-2.2.4.min.js" type="text/javascript"></script>-->
+    <script src="/materialize/materialize.min.js" type="text/javascript"></script>
+    <script src="/javascripts/material_start.js" type="text/javascript"></script>
+
+
+</head>

@@ -1,0 +1,57 @@
+<% include head.ejs %>
+<script src="/javascripts/modalTrigger.js" type="text/javascript"></script>
+<% if (loginState === true) {%>
+<body>
+<% include nav_loggedin_home.ejs %>
+<%include gradient_search.ejs%>
+<% } else{ %>
+<body>
+<div class="full-wrap">
+<div class="row" >
+    <div class="col s12 m12 l8" style="padding:0; margin: 0 auto" >
+        <div class="gradient">
+        <%include gradient_search.ejs%>
+        </div>
+    </div>
+    <div class="col s12 m12 l4">
+        <div class="login-wrapper">
+        <div class="login-text">Login</div>
+        <% include login.ejs%>
+        or <br>
+            <div class="btn-wrap">
+        <a href="#" id="signupModal">
+            <button class="btn waves-effect waves-light"  name="signup-link">Sign Up
+                <i class="material-icons right"></i>
+            </button></a>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- The Modal -->
+<div id="Signup" class=" modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <% include signup.ejs %>
+    </div>
+
+
+    <div id="Login-modal" class="modal LoginModal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close_1">&times;</span>
+        </div>
+
+    </div>
+
+</div>
+
+
+<% } %>
+<footer><a href="/privacy-policy">Privacy Policy</a></footer>
+</body>
+<%include footer.ejs%>
+</html>

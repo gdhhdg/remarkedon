@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="/stylesheets/searchbar.css">
+<nav class="nav-extended transparent z-depth-0">
+    <a href="#" data-activates="mobile-demo" id="menu-button" class="button-collapse">Menu</a>
+    <div class="nav-wrapper">
+        <a href="/" class="brand-logo"><img src="/./../mouth.svg" alt=":O" class="filter-black main-logo brand-main"><span class="nav-title-text">RemarkedOn</span></a>
+        <ul class="right hide-on-med-and-down">
+            <li><% include site_search.ejs %></li>
+            <li><a class="nav-button" id="profile_button" href="/profile">Profile</a></li>
+            <li><a class="nav-button" id="logout_button" href="/logout">Logout</a></li>
+            <li><img src="./../mouth.svg" alt="" class="filter-black main-logo brand-main"></li>
+        </ul>
+    </div>
+</nav>
+<% if (login = true){%>
+<ul class="side-nav" id="mobile-demo">
+    <li><a href="/">Home</a></li>
+    <li><a class=""  href="/profile">Profile</a></li>
+    <li><a class=""  href="/logout">logout</a></li>
+</ul>
+<%} else {%>
+<ul class="side-nav" id="mobile-demo">
+    <li><a class=""  href="/signup">Signup</a></li>
+    <li><a class=""  href="/login">Login</a></li>
+</ul>
+<%}%>
+
+

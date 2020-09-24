@@ -1,0 +1,12 @@
+<form class="col s12" action="/submit/<%= encodeURIComponent('https://www.') + encodeURIComponent(url) %>" method="post">
+    <div class="row">
+        <div class="input-field col">
+                        <textarea rows="500" cols="100" name="comment">
+</textarea>
+        </div>
+    </div>
+    <div class="g-recaptcha" name="captcha" data-sitekey="6LfxlpkUAAAAADUfGYCn7gPh1QXCW2IqP374fetF"></div>
+    <button class="btn waves-effect waves-light" type="submit" name="button">Submit
+        <i class="material-icons right"></i>
+    </button>
+</form>

@@ -1,0 +1,40 @@
+<div class="login-wrap">
+<div class="row">
+    <div class="login">
+    <a href="/auth/facebook" class="social-link"><i class="fa fa-2x fa-facebook"></i></a>
+    <a href="/auth/google" class="social-link"><i class="fa fa-2x fa-google"></i></a>
+    <form class="col s12" action="/login" method="post">
+        <div class="row">
+            <div class="input-field col s12">
+                <input  id="email" type="text" class="validate" name="email">
+                <label for="email">Email</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="password" type="password" class="validate" name="password">
+                <label for="password">Password</label>
+            </div>
+            <a class="forgot_password_button" id='forgot_password_button' href="#">Forgot Password</a>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="button">Submit
+            <i class="material-icons right"></i>
+        </button>
+    </form>
+    </div>
+    <!-- Forgot Password Popup -->
+    <div class="forgot_password">
+        <form class="col s12" action="/forgotpassword" method="post">
+            <a class="forgot_password_button" href="#">back</a>
+            <div class="input-field col s12">
+                <input  id="email" type="text" class="" name="email">
+                <label for="email">User Name/Email</label>
+                <button class="btn waves-effect waves-light" type="submit" name="button">Submit
+                    <i class="material-icons right"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+

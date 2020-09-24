@@ -1,0 +1,41 @@
+<% include head.ejs %>
+<% include nav_loggedin_home.ejs %>
+<div class="container">
+    <div class="row">
+    <div class="col s12 m6 push-m6 l4 push-l8 left-align">
+        <div class="flow-text">
+        <ul>
+            <% if (user.user.local.email || user.user.local.username) {%>
+            <li class="user-heading">Username: <span class="user-text"><%= user.user.local.username %></span> </li>
+            <li class="user-heading">email address: <span class="user-text"><%= user.user.local.email %></span></li>
+            <li class="remove-text"><a href="/remove/local">Remove Email?</a></li>
+            <% } else { %>
+
+            <li class="remove-text"><a href="/connect/local">Connect Your Email and Username</a></li>
+            <% } %>
+
+            <% if (user.user.facebook.token)  {%>
+            <li>Facebook: <span class="user-text"><%= user.user.facebook.name %></span></li>
+            <li class="remove-text"><a href="/remove/facebook">Remove Facebook?</a></li>
+            <% } else { %>
+
+            <li class="remove-text">No Facebook account connected. <a href="/connect/facebook">Add now?</a></li>
+            <% } %>
+
+            <% if (user.user.google.token)  {%>
+            <li class="user-heading">Google Name: <span class="user-text"><%= user.user.google.name %></span></li>
+            <li class="remove-text"><a href="/remove/google">Remove Gmail</a></li>
+            <% } else { %>
+            <li class="remove-text">No Gmail account connected.<a href="/connect/google">Add now?</a></li>
+            <% } %>
+            <li class="user-heading">Member since: <span class="user-text"><%=user.joinDate.toISOString().split('T')[0]%></span></li>
+        </ul>
+        </div>
+</div>
+        <div class="col s12 m6 push-m6 l8 pull-l4">
+
+        <h4>Latest Comments</h4>
+        <a class="btn" href="/mycomments">View All</a>
+        </div>
+    </div>
+</div>

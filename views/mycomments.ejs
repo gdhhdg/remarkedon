@@ -1,0 +1,27 @@
+<% include head.ejs %>
+<% include nav_loggedin_home.ejs %>
+<div class="container">
+    <div class="row">
+<h1><%= title %></h1>
+<div class="comment-wrap">
+    <table class="responsive-table highlight">
+        <thead>
+        <tr>
+            <th>
+                Comments
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+    <% for(i = 0; i < comments.length; i++) {%>
+    <%for(x = 0; x < comments[i].comment.length; x++) {%>
+    <tr>
+       <td> <a href="/find/webUrl/webUrl?webUrl=<%- comments[i].comment[x].url %>"> <%-  comments[i].comment[x].comment%></a> </td>
+    </tr>
+
+    <%}}%>
+        </tbody>
+    </table>
+</div>
+    </div>
+</div>

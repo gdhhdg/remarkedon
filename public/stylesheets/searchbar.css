@@ -1,0 +1,138 @@
+@import url(https://fonts.googleapis.com/css?family=Open+Sans);
+
+
+
+:root{
+    --main-text-color: black;
+    --second-text-color:#9b9b9b;
+    --color-light-color:#9b9b9b;
+}
+
+.search {
+    width: 100%;
+    position: relative;
+
+}
+
+.searchTerm {
+    float: left;
+    width: 100%;
+    border: 3px solid white;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px;
+    outline: none;
+    color: white;
+    background-color: white;
+}
+
+.searchTerm:focus{
+    color: white;
+}
+
+
+
+.searchButton {
+    position: absolute;
+    right: -50px;
+    width: 2.5vw;
+    background: transparent!important;
+    text-align: center;
+    cursor: pointer;
+    font-size: 2vw;
+}
+
+.searchbar-btn{
+    background-color:transparent!important;
+    border:none;
+    font-size: 2em;
+}
+
+.searchbar-btn > i {
+    color:white!important;
+
+}
+
+/*Resize the wrap to see the search bar change!*/
+.wrap{
+    width: 50%;
+    position: absolute;
+    margin-top: 2em;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.nav-wrapper{
+background-color: white;
+    width: 100%;
+    height: 100%;
+    margin: 1em;
+
+}
+
+
+.nav-wrapper > ul > li > a {
+    color:black;
+}
+
+.nav-wrapper .searchbar-btn > i {
+    color: #1e88e5!important;
+}
+.nav-wrapper .searchbar-btn > i:hover {
+    color: #0a77ef!important;
+    box-shadow: 1em!important;
+}
+
+.nav-title-text{
+    text-align: center;
+    vertical-align: middle;
+    letter-spacing: .2em;
+}
+
+.nav-button{
+    margin:1em;
+}
+
+.title{
+    color: var(--second-text-color);
+}
+
+
+input[type=text]{
+    background-color: white!important;
+    width: 40vw!important;
+    margin: 1em!important;
+}
+.btn {
+    background-color: #1e88e5!important;
+}
+
+.btn:hover {
+    background-color: #0a77ef!important;
+    box-shadow: 1em!important;
+}
+.input-field{
+    width: 100%;
+}
+input{
+    max-width: 50%;
+    padding-left: 12px!important;
+
+}
+
+.input-li{
+    width: 100%;
+}
+
+.fa-search{
+    color:  #0a77ef;
+}
+
+input, select, textarea{
+    padding: 12px 20px;
+    color: black;
+}
+
+.social-link{
+    padding: 2em!important;
+}
