@@ -185,7 +185,7 @@ router.post('/forgotpassword', function (req, res, next) {
         },
 
         function(token, user, done) {
-            const emailPW = '9rhFJJh=tAcFht$!';
+            const emailPW = '**';
             const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:"+encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
             const mailOptions = {
                 to: req.body.email,
@@ -240,7 +240,7 @@ router.post('/reset/:token', function(req, res) {
             },
             function (user, done) {
                 console.log(JSON.stringify(user));
-                const emailPW = '9rhFJJh=tAcFht$!';
+                const emailPW = '**!';
                 const smtpTransport = nodemailer.createTransport("smtps://remarkedon%40gmail.com:" + encodeURIComponent(emailPW) + "@smtp.gmail.com:465");
                 var mailOptions = {
                     to: user.user.local.email,
